@@ -1,4 +1,4 @@
-package com.zhisheng.examples.util;
+package individualAssessment1.util;
 
 import kafka.consumer.ConsumerConfig;
 import kafka.consumer.ConsumerIterator;
@@ -46,15 +46,20 @@ public class KafkaUtil {
     public static void main(String[] args) throws InterruptedException {
 //        comsume();
 //        produce();
-        produceOnce();
+
+
+        produceOnce(9);
         return;
     }
 
-    private static void produceOnce() {
-        sendToKafka(KafkaUtil.TOPIC,"{\"table\":\"gree\",\"payload\":{\"date\":\"2020-01-15\",\"tenant_id\":\"gree\",\"member_id\":\"15521177989111\",\"sourceId\":330,\"created_time\":1579086719050,\"ip\":\"120.198.22.24\",\"channel\":\"weixin\",\"type\":\"login\",\"platform\":\"Unknown\",\"stay\":0,\"account_id\":\"15521177989\",\"system\":\"Unknown\",\"commodity_id\":\"\",\"money\":0,\"engine\":\"Unknown\",\"activity_id\":\"\",\"active_marking_id\":\"\",\"device\":\"PC\",\"order_id\":\"\"}}");
-        sendToKafka(KafkaUtil.TOPIC,"{\"table\":\"gree\",\"payload\":{\"date\":\"2020-01-15\",\"tenant_id\":\"gree\",\"member_id\":\"15521177989111\",\"sourceId\":330,\"created_time\":1579086719050,\"ip\":\"120.198.22.24\",\"channel\":\"weixin\",\"type\":\"pay\",\"platform\":\"Unknown\",\"stay\":0,\"account_id\":\"15521177989\",\"system\":\"Unknown\",\"commodity_id\":\"\",\"money\":0,\"engine\":\"Unknown\",\"activity_id\":\"\",\"active_marking_id\":\"\",\"device\":\"PC\",\"order_id\":\"\"}}");
-        sendToKafka(KafkaUtil.TOPIC,"{\"table\":\"gree\",\"payload\":{\"date\":\"2020-01-15\",\"tenant_id\":\"gree\",\"member_id\":\"15521177989110\",\"sourceId\":330,\"created_time\":1579086719050,\"ip\":\"120.198.22.24\",\"channel\":\"weixin\",\"type\":\"login\",\"platform\":\"Unknown\",\"stay\":0,\"account_id\":\"15521177989\",\"system\":\"Unknown\",\"commodity_id\":\"\",\"money\":0,\"engine\":\"Unknown\",\"activity_id\":\"\",\"active_marking_id\":\"\",\"device\":\"PC\",\"order_id\":\"\"}}");
-        sendToKafka(KafkaUtil.TOPIC,"{\"table\":\"gree\",\"payload\":{\"date\":\"2020-01-15\",\"tenant_id\":\"gree\",\"member_id\":\"15521177989110\",\"sourceId\":330,\"created_time\":1579086719050,\"ip\":\"120.198.22.24\",\"channel\":\"weixin\",\"type\":\"pay\",\"platform\":\"Unknown\",\"stay\":0,\"account_id\":\"15521177989\",\"system\":\"Unknown\",\"commodity_id\":\"\",\"money\":0,\"engine\":\"Unknown\",\"activity_id\":\"\",\"active_marking_id\":\"\",\"device\":\"PC\",\"order_id\":\"\"}}");
+    private static void produceOnce(int count) {
+        for (int i = 0; i < count; i++) {
+            sendToKafka(KafkaUtil.TOPIC,"{\"table\":\"gree\",\"payload\":{\"date\":\"2020-01-15\",\"tenant_id\":\"gree\",\"member_id\":\"15521177989111\",\"sourceId\":330,\"created_time\":1579086719050,\"ip\":\"120.198.22.24\",\"channel\":\"weixin\",\"type\":\"login\",\"platform\":\"Unknown\",\"stay\":0,\"account_id\":\"15521177989\",\"system\":\"Unknown\",\"commodity_id\":\"\",\"money\":0,\"engine\":\"Unknown\",\"activity_id\":\"\",\"active_marking_id\":\"\",\"device\":\"PC\",\"order_id\":\"\"}}");
+            sendToKafka(KafkaUtil.TOPIC,"{\"table\":\"gree\",\"payload\":{\"date\":\"2020-01-15\",\"tenant_id\":\"gree\",\"member_id\":\"15521177989111\",\"sourceId\":330,\"created_time\":1579086719050,\"ip\":\"120.198.22.24\",\"channel\":\"weixin\",\"type\":\"pay\",\"platform\":\"Unknown\",\"stay\":0,\"account_id\":\"15521177989\",\"system\":\"Unknown\",\"commodity_id\":\"\",\"money\":0,\"engine\":\"Unknown\",\"activity_id\":\"\",\"active_marking_id\":\"\",\"device\":\"PC\",\"order_id\":\"\"}}");
+            sendToKafka(KafkaUtil.TOPIC,"{\"table\":\"gree\",\"payload\":{\"date\":\"2020-01-15\",\"tenant_id\":\"gree\",\"member_id\":\"15521177989110\",\"sourceId\":330,\"created_time\":1579086719050,\"ip\":\"120.198.22.24\",\"channel\":\"weixin\",\"type\":\"login\",\"platform\":\"Unknown\",\"stay\":0,\"account_id\":\"15521177989\",\"system\":\"Unknown\",\"commodity_id\":\"\",\"money\":0,\"engine\":\"Unknown\",\"activity_id\":\"\",\"active_marking_id\":\"\",\"device\":\"PC\",\"order_id\":\"\"}}");
+            sendToKafka(KafkaUtil.TOPIC,"{\"table\":\"gree\",\"payload\":{\"date\":\"2020-01-15\",\"tenant_id\":\"gree\",\"member_id\":\"15521177989110\",\"sourceId\":330,\"created_time\":1579086719050,\"ip\":\"120.198.22.24\",\"channel\":\"weixin\",\"type\":\"pay\",\"platform\":\"Unknown\",\"stay\":0,\"account_id\":\"15521177989\",\"system\":\"Unknown\",\"commodity_id\":\"\",\"money\":0,\"engine\":\"Unknown\",\"activity_id\":\"\",\"active_marking_id\":\"\",\"device\":\"PC\",\"order_id\":\"\"}}");
+
+        }
 
     }
 

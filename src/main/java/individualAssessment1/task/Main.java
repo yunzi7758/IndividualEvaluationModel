@@ -1,7 +1,6 @@
 package individualAssessment1.task;
 
 import com.alibaba.fastjson.JSON;
-import com.zhisheng.examples.util.KafkaUtil;
 import individualAssessment1.domain.OutData;
 import individualAssessment1.uitl.IndividualAssessment;
 import individualAssessment1.domain.Event;
@@ -70,7 +69,7 @@ public class Main {
 
         DataStreamSource<String> appInfoSource = env.addSource(new FlinkKafkaConsumer011<>(
                 // kafka topic， String 序列化
-                KafkaUtil.TOPIC, new SimpleStringSchema(),
+                individualAssessment1.util.KafkaUtil.TOPIC, new SimpleStringSchema(),
 //                KafkaConfigUtil.buildKafkaProps( ExecutionEnvUtil.PARAMETER_TOOL))
                 props
         ));
@@ -166,109 +165,6 @@ public class Main {
                 ;
     }
 
-
-    private static void oneState(String[] args) throws Exception {
-        final StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
-        // 1 分钟一次CheckPoint
-//        env.enableCheckpointing(TimeUnit.MINUTES.toMillis(1));
-//        env.setParallelism(2);
-//
-//        CheckpointConfig checkpointConf = env.getCheckpointConfig();
-//        // CheckPoint 语义 EXACTLY ONCE
-//        checkpointConf.setCheckpointingMode(CheckpointingMode.EXACTLY_ONCE);
-//        checkpointConf.enableExternalizedCheckpoints(CheckpointConfig.ExternalizedCheckpointCleanup.RETAIN_ON_CANCELLATION);
-
-        Properties props = getProperties();
-
-
-        System.out.println("=================start");
-        //参数检查
-        if (args.length != 2) {
-            System.err.println("USAGE:\nSocketTextStreamWordCount <hostname> <port>");
-            return;
-        }
-
-        String hostname = args[0];
-        Integer port = Integer.parseInt(args[1]);
-
-        //获取数据
-//        DataStreamSource<String> appInfoSource = env.socketTextStream(hostname, port);
-
-        DataStreamSource<String> appInfoSource = env.addSource(new FlinkKafkaConsumer011<>(
-                // kafka topic， String 序列化
-                KafkaUtil.TOPIC, new SimpleStringSchema(),
-//                KafkaConfigUtil.buildKafkaProps( ExecutionEnvUtil.PARAMETER_TOOL))
-                props
-        ));
-
-        appInfoSource.print();
-
-        // 按照 appId 进行 keyBy
-        SingleOutputStreamOperator<Tuple2<String, Long>> apply = appInfoSource.keyBy(new KeySelector<String, Event>() {
-            @Override
-            public Event getKey(String s) throws Exception {
-                Event event = JSON.parseObject(s, Event.class);
-
-                return event;
-            }
-        })
-//                .timeWindowAll(Time.seconds(1)).apply(new AllWindowFunction<String, Object, TimeWindow>() {
-//            @Override
-//            public void apply(TimeWindow timeWindow, Iterable<String> iterable, Collector<Object> collector) throws Exception {
-//
-//            }
-//        })
-                .map(new RichMapFunction<String, Tuple2<String, Long>>() {
-                    private ValueState<Long> scoreState;
-                    private long pv = 0;
-
-
-                    @Override
-                    public void open(Configuration parameters) throws Exception {
-                        super.open(parameters);
-                        // 初始化状态
-                        scoreState = getRuntimeContext().getState(
-                                new ValueStateDescriptor<>("pvStat",
-                                        TypeInformation.of(new TypeHint<Long>() {
-                                        })));
-                    }
-
-                    @Override
-                    public Tuple2<String, Long> map(String appId) throws Exception {
-                        Event event = JSON.parseObject(appId, Event.class);
-
-                        // 从状态中获取该 app 的pv值，+1后，update 到状态中
-                        if (null == scoreState.value()) {
-                            System.out.println("{member_id:" + (String) event.getPayload().get("member_id") +
-                                    "} is new member, score  is default 10");
-                            pv = 10;
-                        } else {
-                            pv = scoreState.value();
-                            String type = (String) event.getPayload().get("type");
-                            Long typeV = Rule.getScoreByType(type);
-                            System.out.println("type:" + type +
-                                    " get " + typeV +
-                                    " score");
-                            pv += typeV;
-                            System.out.println("{member_id:" + (String) event.getPayload().get("member_id") +
-                                    "} is old member , score is {" + pv +
-                                    "}");
-                        }
-                        scoreState.update(pv);
-                        return new Tuple2<>((String) event.getPayload().get("member_id"), pv);
-                    }
-                }).timeWindowAll(Time.seconds(10)).apply(new AllWindowFunction<Tuple2<String, Long>, Tuple2<String, Long>, TimeWindow>() {
-                    @Override
-                    public void apply(TimeWindow timeWindow, Iterable<Tuple2<String, Long>> iterable, Collector<Tuple2<String, Long>> collector) throws Exception {
-                        iterable.forEach(v -> collector.collect(v));
-                    }
-                });
-
-        apply.print();
-
-        System.out.println("=================end");
-        env.execute("Flink pv stat");
-    }
 
     private static Properties getProperties() {
         Properties props = new Properties();
