@@ -14,6 +14,7 @@ import org.apache.flink.cep.PatternSelectFunction;
 import org.apache.flink.cep.PatternStream;
 import org.apache.flink.cep.pattern.Pattern;
 import org.apache.flink.cep.pattern.conditions.IterativeCondition;
+import org.apache.flink.cep.pattern.conditions.SimpleCondition;
 import org.apache.flink.streaming.api.CheckpointingMode;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.datastream.DataStreamSource;
@@ -50,7 +51,10 @@ public class CepMain {
 
 
 
-        Pattern<Event, ?> warningPattern = PatternUtil.createPattern();
+        Pattern<Event, ?> pattern = PatternUtil.createPattern();
+
+
+
 
 
         // Create a pattern stream from our warning pattern
@@ -62,20 +66,22 @@ public class CepMain {
                         return (String) event.getPayload().get("member_id");
                     }
                 }),
-                warningPattern);
+                pattern);
 
         // Generate temperature warnings for each matched warning pattern
         // 通过模式流，选择出匹配温度告警模式的数据流。
         SingleOutputStreamOperator<Event> first = tempPatternStream.select(new PatternSelectFunction<Event, Event>() {
             @Override
             public Event select(Map<String, List<Event>> map) throws Exception {
-                Event first = map.get("first").get(0);
+                Event first = map.get("1").get(0);
 
+                System.out.println("map-1:"+map.get("1").size());
+                System.out.println("map-2:"+map.get("2").size());
                 return first;
             }
         });
 
-        first.print();
+//        first.print();
 
 
         env.execute("cep");

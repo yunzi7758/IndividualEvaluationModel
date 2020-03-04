@@ -40,7 +40,7 @@ public class KafkaUtil {
 
         ProducerRecord record = new ProducerRecord<String, String>(topic, null, null, msg);
         producer.send(record);
-        System.out.println("发送数据: " + msg);
+//        System.out.println("发送数据: " + msg);
         producer.flush();
     }
     public static void main(String[] args) throws InterruptedException {
@@ -48,11 +48,12 @@ public class KafkaUtil {
 //        produce();
 
 
-        produceOnce(9);
+        produceOnce(1);
         return;
     }
 
     private static void produceOnce(int count) {
+        System.out.println(count);
         for (int i = 0; i < count; i++) {
             sendToKafka(KafkaUtil.TOPIC,"{\"table\":\"gree\",\"payload\":{\"date\":\"2020-01-15\",\"tenant_id\":\"gree\",\"member_id\":\"15521177989111\",\"sourceId\":330,\"created_time\":1579086719050,\"ip\":\"120.198.22.24\",\"channel\":\"weixin\",\"type\":\"login\",\"platform\":\"Unknown\",\"stay\":0,\"account_id\":\"15521177989\",\"system\":\"Unknown\",\"commodity_id\":\"\",\"money\":0,\"engine\":\"Unknown\",\"activity_id\":\"\",\"active_marking_id\":\"\",\"device\":\"PC\",\"order_id\":\"\"}}");
             sendToKafka(KafkaUtil.TOPIC,"{\"table\":\"gree\",\"payload\":{\"date\":\"2020-01-15\",\"tenant_id\":\"gree\",\"member_id\":\"15521177989111\",\"sourceId\":330,\"created_time\":1579086719050,\"ip\":\"120.198.22.24\",\"channel\":\"weixin\",\"type\":\"pay\",\"platform\":\"Unknown\",\"stay\":0,\"account_id\":\"15521177989\",\"system\":\"Unknown\",\"commodity_id\":\"\",\"money\":0,\"engine\":\"Unknown\",\"activity_id\":\"\",\"active_marking_id\":\"\",\"device\":\"PC\",\"order_id\":\"\"}}");
@@ -67,11 +68,7 @@ public class KafkaUtil {
         while (true) {
 
             Thread.sleep(1000);
-            sendToKafka(KafkaUtil.TOPIC,"{\"table\":\"gree\",\"payload\":{\"date\":\"2020-01-15\",\"tenant_id\":\"gree\",\"member_id\":\"15521177989111\",\"sourceId\":330,\"created_time\":1579086719050,\"ip\":\"120.198.22.24\",\"channel\":\"weixin\",\"type\":\"login\",\"platform\":\"Unknown\",\"stay\":0,\"account_id\":\"15521177989\",\"system\":\"Unknown\",\"commodity_id\":\"\",\"money\":0,\"engine\":\"Unknown\",\"activity_id\":\"\",\"active_marking_id\":\"\",\"device\":\"PC\",\"order_id\":\"\"}}");
-            sendToKafka(KafkaUtil.TOPIC,"{\"table\":\"gree\",\"payload\":{\"date\":\"2020-01-15\",\"tenant_id\":\"gree\",\"member_id\":\"15521177989111\",\"sourceId\":330,\"created_time\":1579086719050,\"ip\":\"120.198.22.24\",\"channel\":\"weixin\",\"type\":\"pay\",\"platform\":\"Unknown\",\"stay\":0,\"account_id\":\"15521177989\",\"system\":\"Unknown\",\"commodity_id\":\"\",\"money\":0,\"engine\":\"Unknown\",\"activity_id\":\"\",\"active_marking_id\":\"\",\"device\":\"PC\",\"order_id\":\"\"}}");
-            sendToKafka(KafkaUtil.TOPIC,"{\"table\":\"gree\",\"payload\":{\"date\":\"2020-01-15\",\"tenant_id\":\"gree\",\"member_id\":\"15521177989110\",\"sourceId\":330,\"created_time\":1579086719050,\"ip\":\"120.198.22.24\",\"channel\":\"weixin\",\"type\":\"login\",\"platform\":\"Unknown\",\"stay\":0,\"account_id\":\"15521177989\",\"system\":\"Unknown\",\"commodity_id\":\"\",\"money\":0,\"engine\":\"Unknown\",\"activity_id\":\"\",\"active_marking_id\":\"\",\"device\":\"PC\",\"order_id\":\"\"}}");
-            sendToKafka(KafkaUtil.TOPIC,"{\"table\":\"gree\",\"payload\":{\"date\":\"2020-01-15\",\"tenant_id\":\"gree\",\"member_id\":\"15521177989110\",\"sourceId\":330,\"created_time\":1579086719050,\"ip\":\"120.198.22.24\",\"channel\":\"weixin\",\"type\":\"pay\",\"platform\":\"Unknown\",\"stay\":0,\"account_id\":\"15521177989\",\"system\":\"Unknown\",\"commodity_id\":\"\",\"money\":0,\"engine\":\"Unknown\",\"activity_id\":\"\",\"active_marking_id\":\"\",\"device\":\"PC\",\"order_id\":\"\"}}");
-
+            produceOnce(1);
         }
     }
 
