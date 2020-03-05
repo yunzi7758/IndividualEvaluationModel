@@ -8,6 +8,7 @@ public class Scene {
     private Long id;
     private Long sceneStructure;
 
+    // LinkedList 连续的规则
     private List<Rule> rules;
 
 
@@ -36,5 +37,14 @@ public class Scene {
 
     public void setSceneStructure(Long sceneStructure) {
         this.sceneStructure = sceneStructure;
+    }
+
+    @Override
+    public String toString() {
+        return "Scene{" +
+                "id=" + id +
+                ", sceneStructure=" + sceneStructure +
+                ", rules=" + rules +
+                '}';
     }
 }

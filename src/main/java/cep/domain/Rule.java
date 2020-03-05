@@ -1,9 +1,12 @@
 package cep.domain;
 
+import java.io.Serializable;
+
 /**
  * 个体评估模型的规则
+ * @author yunzi7758
  */
-public class Rule {
+public class Rule implements Serializable {
 
     public static final String TYPE_LOGIN = "login";
     public static final String TYPE_PAY = "pay";
@@ -14,6 +17,8 @@ public class Rule {
     // 行为
     private String operationType;
 
+    public static final Long DO = 1L;
+    public static final Long NODO = 2L;
     // 做过或者没做过
     private Long doOrNot;
 
@@ -33,6 +38,8 @@ public class Rule {
     // 下个事件发生的 时间限制
 
     public static final Long UNIT_SECOND = 1L;
+    public static final Long UNIT_HOUR = 2L;
+    public static final Long UNIT_DAY = 3L;
     // 时间单位
     private Long timeUnit;
 
@@ -94,5 +101,18 @@ public class Rule {
 
     public void setTimeValue(Long timeValue) {
         this.timeValue = timeValue;
+    }
+
+    @Override
+    public String toString() {
+        return "Rule{" +
+                "sceneIc=" + sceneIc +
+                ", operationType='" + operationType + '\'' +
+                ", doOrNot=" + doOrNot +
+                ", andOr=" + andOr +
+                ", doOrNotTimes=" + doOrNotTimes +
+                ", timeUnit=" + timeUnit +
+                ", timeValue=" + timeValue +
+                '}';
     }
 }
